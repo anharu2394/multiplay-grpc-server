@@ -3,6 +3,11 @@ name = "multiplay-grpc-server"
 version = "0.1.0"
 authors = ["安藤春香 <haruan2394@gmail.com>"]
 edition = "2018"
+build = "build.rs"
 
 [dependencies]
+futures = "0.1.16"
 grpcio = "0.4.3"
+protobuf = "1.4.1"
+[build-dependencies]
+protoc-grpcio = "0.3.1"
