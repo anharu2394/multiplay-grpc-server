@@ -1,10 +1,16 @@
 syntax = "proto3";
 package anharu;
-import 'user.proto';
 
 service Multiplay {
 }
 
 service User {
-  rpc Create (user.CreateRequest) returns (user.CreateResponse);
+  rpc Create (CreateUserRequest) returns (CreateUserResponse);
+}
+
+message CreateUserRequest {
+  string name = 1;
+}
+message CreateUserResponse {
+  uint32 id = 1;
 }

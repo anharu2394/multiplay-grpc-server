@@ -1,9 +1,0 @@
-syntax = "proto3";
-package anharu.user;
-
-message CreateRequest {
-  string name = 1;
-}
-message CreateResponse {
-  uint32 id = 1;
-}
