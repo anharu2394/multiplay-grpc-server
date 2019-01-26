@@ -8,6 +8,6 @@ build = "build.rs"
 [dependencies]
 futures = "0.1.16"
 grpcio = "0.4.3"
-protobuf = "1.4.1"
+protobuf = "2.0.4"
 [build-dependencies]
 protoc-grpcio = "0.3.1"
