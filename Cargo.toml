@@ -5,3 +5,4 @@ authors = ["安藤春香 <haruan2394@gmail.com>"]
 edition = "2018"
 
 [dependencies]
+grpcio = "0.4.3"
