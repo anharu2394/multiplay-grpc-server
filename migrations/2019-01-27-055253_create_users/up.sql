@@ -1,0 +1,5 @@
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR NOT NULL UNIQUE,
+  position POINT NOT NULL DEFAULT point(0,0) 
+)
