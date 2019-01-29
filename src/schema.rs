@@ -17,7 +17,8 @@ table! {
     users (id) {
         id -> Int4,
         name -> Varchar,
-        position -> Point,
+        x -> Float8,
+        y -> Float8,
     }
 }
 
