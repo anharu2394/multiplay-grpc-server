@@ -32,14 +32,30 @@ struct MultiplayService;
 struct UserService;
 
 impl Multiplay for MultiplayService {
+    fn get_users(&mut self,
+        ctx: RpcContext,
+        req: GetUsersRequest,
+        resp: ServerStreamingSink<GetUsersResponse>
+        ) {
+        println!("{}",req.get_room_id());
+    }
+    fn set_position(&mut self,
+        ctx: RpcContext,
+        req: RequestStream<SetPositionRequest>,
+        resp: ClientStreamingSink<SetPositionResponse>
+        ) {
+    }
 }
 
 impl User for UserService {
     fn create(&mut self, ctx: RpcContext, req: CreateUserRequest, sink: UnarySink<CreateUserResponse>) {
-        let name = req.get_name();
-        println!("{}", name);
+        let conn = establish_connection();
+        let user_name = req.get_name();
+        println!("{}", &user_name);
+        let new_user = NewUser { name: user_name.to_string() };
+        let result_id = diesel::insert_into(users).values(&new_user).returning(id).get_result::<i32>(&conn).unwrap();
         let mut resp = CreateUserResponse::new();
-        resp.set_id(1);
+        resp.set_id(result_id as u32);
         let f = sink
             .success(resp)
             .map_err(move |e| println!("failed to reply {:?}: {:?}", req, e));
