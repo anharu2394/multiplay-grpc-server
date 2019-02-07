@@ -2,7 +2,7 @@ syntax = "proto3";
 package anharu;
 
 service Multiplay {
-  rpc GetUsers(GetUsersRequest) returns (stream GetUsersResonse);
+  rpc GetUsers(GetUsersRequest) returns (stream GetUsersResponse);
   rpc SetPosition(stream SetPositionRequest) returns (SetPositionResponse);
 }
 
@@ -10,7 +10,7 @@ message GetUsersRequest {
   uint32 room_id = 1;
 }
 
-message GetUsersResonse {
+message GetUsersResponse {
   repeated UserPosition users = 1; 
 }
 
