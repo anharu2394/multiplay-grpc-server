@@ -13,9 +13,17 @@ use std::sync::{Arc, Mutex};
 use std::{io, thread};
 use std::io::Read;
 
-use grpcio::{Environment, RpcContext, ServerBuilder, UnarySink};
+use grpcio::*;
 use protos::multiplay::*;
 use protos::multiplay_grpc::{Multiplay, User};
+
+use diesel::prelude::*;
+use diesel::pg::PgConnection;
+
+use multiplay_grpc_server::schema::users;
+use multiplay_grpc_server::schema::users::dsl::*;
+use multiplay_grpc_server::{establish_connection};
+use multiplay_grpc_server::models::*;
 
 #[derive(Clone)]
 struct MultiplayService;
