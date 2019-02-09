@@ -22,6 +22,10 @@ use protos::multiplay_grpc::{Multiplay, User};
 use diesel::prelude::*;
 use diesel::pg::PgConnection;
 
+use mongodb::{Bson, bson, doc};
+use mongodb::{Client, ThreadedClient};
+use mongodb::db::ThreadedDatabase;
+
 use multiplay_grpc_server::schema::users;
 use multiplay_grpc_server::schema::users::dsl::*;
 use multiplay_grpc_server::{establish_connection};
