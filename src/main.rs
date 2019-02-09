@@ -70,7 +70,9 @@ impl User for UserService {
 }
 
 fn main() {
-    println!("hello world");
+    let client = Client::connect("localhost", 27017)
+        .expect("Failed to initialize standalone client.");
+
     let env = Arc::new(Environment::new(1));
     let service = protos::multiplay_grpc::create_user(UserService);
     let host = env::var("RUST_GRPC_HOST").unwrap_or("127.0.0.1".to_string());
