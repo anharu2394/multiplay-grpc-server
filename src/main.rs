@@ -44,24 +44,75 @@ impl Multiplay for MultiplayService {
         resp: ServerStreamingSink<GetUsersResponse>
         ) {
         println!("{}",req.get_room_id());
+        let db = &self.client;
     }
     fn set_position(&mut self,
         ctx: RpcContext,
         req: RequestStream<SetPositionRequest>,
         resp: ClientStreamingSink<SetPositionResponse>
         ) {
+        let coll = self.client.db("multiplay-grpc").collection("users");
+        println!("get!!request");
+        let f = req.map(move |position| {
+            println!("Receive: {:?}", position);
+            let id = position.get_id().to_string();
+            let filter = doc!{"_id": ObjectId::with_string(&id).unwrap()};
+            let new_position = doc!{
+                "$set": {
+                    "x": position.get_x(),
+                    "y": position.get_y(),
+                },
+            };
+            let coll_result = coll.find_one_and_update(filter.clone(), new_position, None)
+                .expect("Faild to get player");
+            let player = coll_result.expect("result is None");
+            println!("player : {}",player);
+            /*
+            match coll.update_one(filter.clone(), new_position, None) {
+                Ok(r) => {
+                    println!("{} was matched {} was modified",r.matched_count,r.modified_count);
+                match r.write_exception {
+                    Some(exce) => println!("{}",exce.message),
+                    None => println!("no exception"),
+                }
+                },
+                Err(e) => panic!("{}",e),
+            }
+            */
+            id
+        })
+        .fold(String::new(),|init,id| {
+            println!("init :{}",init);
+            println!("id: {}",id);
+            Ok(format!("{}",id)) as Result<String>
+        })
+        .and_then(move |id| {
+            let mut rep = SetPositionResponse::new();
+            rep.set_id(id);
+            rep.set_status("ok".to_string());
+            resp.success(rep)
+        })
+        .map_err(|e| println!("failed to record route: {:?}", e));
+        ctx.spawn(f)
     }
 }
 
 impl User for UserService {
     fn create(&mut self, ctx: RpcContext, req: CreateUserRequest, sink: UnarySink<CreateUserResponse>) {
-        let conn = establish_connection();
+        let coll = self.client.db("multiplay-grpc").collection("users");
         let user_name = req.get_name();
         println!("{}", &user_name);
-        let new_user = NewUser { name: user_name.to_string() };
-        let result_id = diesel::insert_into(users).values(&new_user).returning(id).get_result::<i32>(&conn).unwrap();
+        let new_user = doc! {
+            "name": user_name,
+            "x": 0,
+            "y": 0,
+        };
+        let result_bson = coll.insert_one(new_user.clone(), None)
+            .expect("Failed to insert doc.").inserted_id.expect("Failed to get inserted id");
+        let result_id = result_bson.as_object_id().unwrap().to_hex();
+        println!("{}",&result_id); 
         let mut resp = CreateUserResponse::new();
-        resp.set_id(result_id as u32);
+        resp.set_id(result_id);
         let f = sink
             .success(resp)
             .map_err(move |e| println!("failed to reply {:?}: {:?}", req, e));
