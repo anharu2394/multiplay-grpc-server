@@ -7,7 +7,7 @@ service Multiplay {
 }
 
 message GetUsersRequest {
-  uint32 room_id = 1;
+  string room_id = 1;
 }
 
 message GetUsersResponse {
@@ -15,20 +15,20 @@ message GetUsersResponse {
 }
 
 message UserPosition {
-  uint32 id = 1;
+  string id = 1;
   double x = 2;
   double y = 3;
 }
 
 message SetPositionRequest {
-  uint32 id = 1;
+  string id = 1;
   double x = 2;
   double y = 3;
 }
 
 message SetPositionResponse {
   string status = 1;
-  uint32 id = 2;
+  string id = 2;
   string error = 3;
 }
 
@@ -40,5 +40,5 @@ message CreateUserRequest {
   string name = 1;
 }
 message CreateUserResponse {
-  uint32 id = 1;
+  string id = 1;
 }
