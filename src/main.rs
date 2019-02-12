@@ -6,7 +6,8 @@ extern crate mongodb;
 
 mod protos;
 
-use futures::Future;
+use futures::*;
+use futures::Stream;
 use futures::sync::oneshot;
 use std::collections::HashMap;
 use std::env;
