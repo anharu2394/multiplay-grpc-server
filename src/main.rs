@@ -17,7 +17,7 @@ use grpcio::*;
 use protos::multiplay::*;
 use protos::multiplay_grpc::{Multiplay, User};
 
-use mongodb::{Bson, bson, doc};
+use mongodb::{bson, doc};
 use mongodb::oid::ObjectId;
 use mongodb::{Client, ThreadedClient};
 use mongodb::db::ThreadedDatabase;
