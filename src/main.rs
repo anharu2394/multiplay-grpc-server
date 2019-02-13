@@ -62,18 +62,6 @@ impl Multiplay for MultiplayService {
                 .expect("Faild to get player");
             let player = coll_result.expect("result is None");
             println!("player : {}",player);
-            /*
-            match coll.update_one(filter.clone(), new_position, None) {
-                Ok(r) => {
-                    println!("{} was matched {} was modified",r.matched_count,r.modified_count);
-                match r.write_exception {
-                    Some(exce) => println!("{}",exce.message),
-                    None => println!("no exception"),
-                }
-                },
-                Err(e) => panic!("{}",e),
-            }
-            */
             id
         })
         .fold(String::new(),|init,id| {
