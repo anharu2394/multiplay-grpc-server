@@ -17,8 +17,6 @@ use grpcio::*;
 use protos::multiplay::*;
 use protos::multiplay_grpc::{Multiplay, User};
 
-use diesel::prelude::*;
-use diesel::pg::PgConnection;
 use mongodb::{Bson, bson, doc};
 use mongodb::oid::ObjectId;
 use mongodb::{Client, ThreadedClient};
