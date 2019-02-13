@@ -120,13 +120,13 @@ fn main() {
         .expect("Failed to initialize standalone client.");
 
     let env = Arc::new(Environment::new(1));
-    let userService = protos::multiplay_grpc::create_user(UserService { client: client.clone()});
-    let multiplayService = protos::multiplay_grpc::create_multiplay(MultiplayService { client: client.clone() });
+    let user_service = protos::multiplay_grpc::create_user(UserService { client: client.clone()});
+    let multiplay_service = protos::multiplay_grpc::create_multiplay(MultiplayService { client: client.clone() });
     let host = env::var("RUST_GRPC_HOST").unwrap_or("127.0.0.1".to_string()); 
     let port = env::var("RUST_GRPC_PORT").unwrap_or("57601".to_string());
     let mut server = ServerBuilder::new(env)
-        .register_service(userService)
-        .register_service(multiplayService)
+        .register_service(user_service)
+        .register_service(multiplay_service)
         .bind(host, port.parse().unwrap())
         .build()
         .unwrap();
