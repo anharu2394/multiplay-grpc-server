@@ -1,7 +1,6 @@
 extern crate futures;
 extern crate multiplay_grpc_server;
 extern crate serde_derive;
-#[macro_use(bson, doc)]
 extern crate mongodb;
 
 mod protos;
