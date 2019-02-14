@@ -45,7 +45,21 @@ impl Multiplay for MultiplayService {
         resp: ServerStreamingSink<GetUsersResponse>
         ) {
         println!("{}",req.get_room_id());
-        let db = &self.client;
+        let coll = self.client.db("multiplay-grpc").collection("users");
+        let users = iter::repeat(())
+            .map(move |()| {
+                println!("Start");
+                let mut reply = GetUsersResponse::new();
+                let result_users = coll.find(None, None)
+                    .expect("Failed to get users");
+                println!("User Count: {}",result_users.count());
+                (reply, WriteFlags::default())
+            });
+        let f = resp
+            .send_all(stream::iter_ok::<_, Error>(users))
+            .map(|_| {})
+            .map_err(|e| println!("failed to handle listfeatures request: {:?}", e));
+        ctx.spawn(f)
     }
     fn set_position(&mut self,
         ctx: RpcContext,
