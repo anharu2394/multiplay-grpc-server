@@ -11,6 +11,7 @@ use futures::Stream;
 use futures::sync::oneshot;
 use std::collections::HashMap;
 use std::env;
+use std::iter;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, Mutex};
 use std::{io, thread};
