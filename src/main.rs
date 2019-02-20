@@ -1,7 +1,6 @@
 extern crate futures;
 extern crate multiplay_grpc_server;
 extern crate serde_derive;
-#[macro_use(bson, doc)]
 extern crate mongodb;
 
 mod protos;
@@ -9,10 +8,8 @@ mod protos;
 use futures::*;
 use futures::Stream;
 use futures::sync::oneshot;
-use std::collections::HashMap;
 use std::env;
-use std::sync::atomic::{AtomicBool, Ordering};
-use std::sync::{Arc, Mutex};
+use std::sync::{Arc};
 use std::{io, thread};
 use std::io::Read;
 
@@ -20,9 +17,7 @@ use grpcio::*;
 use protos::multiplay::*;
 use protos::multiplay_grpc::{Multiplay, User};
 
-use diesel::prelude::*;
-use diesel::pg::PgConnection;
-use mongodb::{Bson, bson, doc};
+use mongodb::{bson, doc};
 use mongodb::oid::ObjectId;
 use mongodb::{Client, ThreadedClient};
 use mongodb::db::ThreadedDatabase;
@@ -67,18 +62,6 @@ impl Multiplay for MultiplayService {
                 .expect("Faild to get player");
             let player = coll_result.expect("result is None");
             println!("player : {}",player);
-            /*
-            match coll.update_one(filter.clone(), new_position, None) {
-                Ok(r) => {
-                    println!("{} was matched {} was modified",r.matched_count,r.modified_count);
-                match r.write_exception {
-                    Some(exce) => println!("{}",exce.message),
-                    None => println!("no exception"),
-                }
-                },
-                Err(e) => panic!("{}",e),
-            }
-            */
             id
         })
         .fold(String::new(),|init,id| {
@@ -125,13 +108,13 @@ fn main() {
         .expect("Failed to initialize standalone client.");
 
     let env = Arc::new(Environment::new(1));
-    let userService = protos::multiplay_grpc::create_user(UserService { client: client.clone()});
-    let multiplayService = protos::multiplay_grpc::create_multiplay(MultiplayService { client: client.clone() });
+    let user_service = protos::multiplay_grpc::create_user(UserService { client: client.clone()});
+    let multiplay_service = protos::multiplay_grpc::create_multiplay(MultiplayService { client: client.clone() });
     let host = env::var("RUST_GRPC_HOST").unwrap_or("127.0.0.1".to_string()); 
     let port = env::var("RUST_GRPC_PORT").unwrap_or("57601".to_string());
     let mut server = ServerBuilder::new(env)
-        .register_service(userService)
-        .register_service(multiplayService)
+        .register_service(user_service)
+        .register_service(multiplay_service)
         .bind(host, port.parse().unwrap())
         .build()
         .unwrap();
