@@ -9,10 +9,13 @@ use futures::*;
 use futures::Stream;
 use futures::sync::oneshot;
 use std::env;
-use std::sync::{Arc};
+use std::iter;
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::{Arc, Mutex};
 use std::{io, thread};
 use std::io::Read;
 
+use protobuf::RepeatedField;
 use grpcio::*;
 use protos::multiplay::*;
 use protos::multiplay_grpc::{Multiplay, User};
@@ -39,7 +42,33 @@ impl Multiplay for MultiplayService {
         resp: ServerStreamingSink<GetUsersResponse>
         ) {
         println!("{}",req.get_room_id());
-        let db = &self.client;
+        let coll = self.client.db("multiplay-grpc").collection("users");
+        let users = iter::repeat(())
+            .map(move |()| {
+                let mut reply = GetUsersResponse::new();
+                let result_users = coll.find(None, None)
+                    .expect("Failed to get users");
+                let mut users_vec = Vec::new();
+                result_users
+                    .map(|user| {
+                        let mut user_position = UserPosition::new();
+                        let doc = user.unwrap();
+                        user_position.set_id(doc.get_object_id("_id").unwrap().to_hex());
+                        user_position.set_x(doc.get_f64("x").unwrap());
+                        user_position.set_y(doc.get_f64("y").unwrap());
+                        user_position
+                    })
+                    .for_each(|user| {
+                        users_vec.push(user);
+                    });
+                reply.set_users(RepeatedField::from_vec(users_vec));
+                (reply, WriteFlags::default())
+            });
+        let f = resp
+            .send_all(stream::iter_ok::<_, Error>(users))
+            .map(|_| {})
+            .map_err(|e| println!("failed to handle listfeatures request: {:?}", e));
+        ctx.spawn(f)
     }
     fn set_position(&mut self,
         ctx: RpcContext,
@@ -87,8 +116,8 @@ impl User for UserService {
         println!("{}", &user_name);
         let new_user = doc! {
             "name": user_name,
-            "x": 0,
-            "y": 0,
+            "x": 0.0,
+            "y": 0.0,
         };
         let result_bson = coll.insert_one(new_user.clone(), None)
             .expect("Failed to insert doc.").inserted_id.expect("Failed to get inserted id");
