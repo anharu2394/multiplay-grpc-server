@@ -49,11 +49,23 @@ impl Multiplay for MultiplayService {
         let coll = self.client.db("multiplay-grpc").collection("users");
         let users = iter::repeat(())
             .map(move |()| {
-                println!("Start");
                 let mut reply = GetUsersResponse::new();
                 let result_users = coll.find(None, None)
                     .expect("Failed to get users");
-                println!("User Count: {}",result_users.count());
+                let mut users_vec = Vec::new();
+                result_users
+                    .map(|user| {
+                        let mut user_position = UserPosition::new();
+                        let doc = user.unwrap();
+                        user_position.set_id(doc.get_object_id("_id").unwrap().to_hex());
+                        user_position.set_x(doc.get_f64("x").unwrap());
+                        user_position.set_y(doc.get_f64("y").unwrap());
+                        user_position
+                    })
+                    .for_each(|user| {
+                        users_vec.push(user);
+                    });
+                reply.set_users(RepeatedField::from_vec(users_vec));
                 (reply, WriteFlags::default())
             });
         let f = resp
