@@ -107,6 +107,59 @@ impl Multiplay for MultiplayService {
         .map_err(|e| println!("failed to record route: {:?}", e));
         ctx.spawn(f)
     }
+    fn connect_position(&mut self,
+        ctx: RpcContext,
+        req: RequestStream<ConnectPositionRequest>,
+        resp: DuplexSink<ConnectPositionResponse>
+        ) {
+        let coll = self.client.db("multiplay-grpc").collection("users");
+        let to_send = req
+            .map(move |position| {
+                println!("Receive: {:?}", position);
+                let id = position.get_id().to_string();
+                let filter = doc!{"_id": ObjectId::with_string(&id).unwrap()};
+                let new_position = doc!{
+                    "$set": {
+                        "x": position.get_x(),
+                        "y": position.get_y(),
+                    },
+                };
+                let coll_result = coll.find_one_and_update(filter.clone(), new_position, None)
+                    .expect("Faild to get player");
+                let player = coll_result.expect("result is None");
+                println!("player : {}",player);
+                
+                let coll = self.client.db("multiplay-grpc").collection("users");
+                let users = iter::repeat(())
+                    .map(|()| {
+                        let mut reply = ConnectPositionResponse::new();
+                        let result_users = coll.find(None, None)
+                            .expect("Failed to get users");
+                        let mut users_vec = Vec::new();
+                        result_users
+                            .map(move |user| {
+                                let mut user_position = UserPosition::new();
+                                let doc = user.unwrap();
+                                user_position.set_id(doc.get_object_id("_id").unwrap().to_hex());
+                                user_position.set_x(doc.get_f64("x").unwrap());
+                                user_position.set_y(doc.get_f64("y").unwrap());
+                                user_position
+                            })
+                            .for_each(|user| {
+                                users_vec.push(user);
+                            });
+                        reply.set_users(RepeatedField::from_vec(users_vec));
+                        (reply, WriteFlags::default())
+                    });
+                stream::iter_ok::<_, Error>(users)
+            })
+            .flatten();
+            let f = resp
+                .send_all(to_send)
+                .map(|_| {})
+                .map_err(|e| println!("failed to route chat: {:?}", e));
+            ctx.spawn(f)
+    }
 }
 
 impl User for UserService {
