@@ -16,6 +16,8 @@ namespace Anharu {
     static readonly grpc::Marshaller<global::Anharu.GetUsersResponse> __Marshaller_anharu_GetUsersResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Anharu.GetUsersResponse.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::Anharu.SetPositionRequest> __Marshaller_anharu_SetPositionRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Anharu.SetPositionRequest.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::Anharu.SetPositionResponse> __Marshaller_anharu_SetPositionResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Anharu.SetPositionResponse.Parser.ParseFrom);
+    static readonly grpc::Marshaller<global::Anharu.ConnectPositionRequest> __Marshaller_anharu_ConnectPositionRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Anharu.ConnectPositionRequest.Parser.ParseFrom);
+    static readonly grpc::Marshaller<global::Anharu.ConnectPositionResponse> __Marshaller_anharu_ConnectPositionResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Anharu.ConnectPositionResponse.Parser.ParseFrom);
 
     static readonly grpc::Method<global::Anharu.GetUsersRequest, global::Anharu.GetUsersResponse> __Method_GetUsers = new grpc::Method<global::Anharu.GetUsersRequest, global::Anharu.GetUsersResponse>(
         grpc::MethodType.ServerStreaming,
@@ -30,6 +32,13 @@ namespace Anharu {
         "SetPosition",
         __Marshaller_anharu_SetPositionRequest,
         __Marshaller_anharu_SetPositionResponse);
+
+    static readonly grpc::Method<global::Anharu.ConnectPositionRequest, global::Anharu.ConnectPositionResponse> __Method_ConnectPosition = new grpc::Method<global::Anharu.ConnectPositionRequest, global::Anharu.ConnectPositionResponse>(
+        grpc::MethodType.DuplexStreaming,
+        __ServiceName,
+        "ConnectPosition",
+        __Marshaller_anharu_ConnectPositionRequest,
+        __Marshaller_anharu_ConnectPositionResponse);
 
     /// <summary>Service descriptor</summary>
     public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
@@ -46,6 +55,11 @@ namespace Anharu {
       }
 
       public virtual global::System.Threading.Tasks.Task<global::Anharu.SetPositionResponse> SetPosition(grpc::IAsyncStreamReader<global::Anharu.SetPositionRequest> requestStream, grpc::ServerCallContext context)
+      {
+        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
+      }
+
+      public virtual global::System.Threading.Tasks.Task ConnectPosition(grpc::IAsyncStreamReader<global::Anharu.ConnectPositionRequest> requestStream, grpc::IServerStreamWriter<global::Anharu.ConnectPositionResponse> responseStream, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
@@ -91,6 +105,14 @@ namespace Anharu {
       {
         return CallInvoker.AsyncClientStreamingCall(__Method_SetPosition, null, options);
       }
+      public virtual grpc::AsyncDuplexStreamingCall<global::Anharu.ConnectPositionRequest, global::Anharu.ConnectPositionResponse> ConnectPosition(grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return ConnectPosition(new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      public virtual grpc::AsyncDuplexStreamingCall<global::Anharu.ConnectPositionRequest, global::Anharu.ConnectPositionResponse> ConnectPosition(grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncDuplexStreamingCall(__Method_ConnectPosition, null, options);
+      }
       /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
       protected override MultiplayClient NewInstance(ClientBaseConfiguration configuration)
       {
@@ -104,7 +126,8 @@ namespace Anharu {
     {
       return grpc::ServerServiceDefinition.CreateBuilder()
           .AddMethod(__Method_GetUsers, serviceImpl.GetUsers)
-          .AddMethod(__Method_SetPosition, serviceImpl.SetPosition).Build();
+          .AddMethod(__Method_SetPosition, serviceImpl.SetPosition)
+          .AddMethod(__Method_ConnectPosition, serviceImpl.ConnectPosition).Build();
     }
 
     /// <summary>Register service method implementations with a service binder. Useful when customizing the service binding logic.
@@ -115,6 +138,7 @@ namespace Anharu {
     {
       serviceBinder.AddMethod(__Method_GetUsers, serviceImpl.GetUsers);
       serviceBinder.AddMethod(__Method_SetPosition, serviceImpl.SetPosition);
+      serviceBinder.AddMethod(__Method_ConnectPosition, serviceImpl.ConnectPosition);
     }
 
   }

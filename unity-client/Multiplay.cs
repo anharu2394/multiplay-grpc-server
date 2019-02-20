@@ -30,14 +30,18 @@ namespace Anharu {
             "CgoCaWQYASABKAkSCQoBeBgCIAEoARIJCgF5GAMgASgBIjYKElNldFBvc2l0",
             "aW9uUmVxdWVzdBIKCgJpZBgBIAEoCRIJCgF4GAIgASgBEgkKAXkYAyABKAEi",
             "QAoTU2V0UG9zaXRpb25SZXNwb25zZRIOCgZzdGF0dXMYASABKAkSCgoCaWQY",
-            "AiABKAkSDQoFZXJyb3IYAyABKAkiIQoRQ3JlYXRlVXNlclJlcXVlc3QSDAoE",
-            "bmFtZRgBIAEoCSIgChJDcmVhdGVVc2VyUmVzcG9uc2USCgoCaWQYASABKAky",
-            "lgEKCU11bHRpcGxheRI/CghHZXRVc2VycxIXLmFuaGFydS5HZXRVc2Vyc1Jl",
-            "cXVlc3QaGC5hbmhhcnUuR2V0VXNlcnNSZXNwb25zZTABEkgKC1NldFBvc2l0",
-            "aW9uEhouYW5oYXJ1LlNldFBvc2l0aW9uUmVxdWVzdBobLmFuaGFydS5TZXRQ",
-            "b3NpdGlvblJlc3BvbnNlKAEyRwoEVXNlchI/CgZDcmVhdGUSGS5hbmhhcnUu",
-            "Q3JlYXRlVXNlclJlcXVlc3QaGi5hbmhhcnUuQ3JlYXRlVXNlclJlc3BvbnNl",
-            "YgZwcm90bzM="));
+            "AiABKAkSDQoFZXJyb3IYAyABKAkiOgoWQ29ubmVjdFBvc2l0aW9uUmVxdWVz",
+            "dBIKCgJpZBgBIAEoCRIJCgF4GAIgASgBEgkKAXkYAyABKAEiPgoXQ29ubmVj",
+            "dFBvc2l0aW9uUmVzcG9uc2USIwoFdXNlcnMYASADKAsyFC5hbmhhcnUuVXNl",
+            "clBvc2l0aW9uIiEKEUNyZWF0ZVVzZXJSZXF1ZXN0EgwKBG5hbWUYASABKAki",
+            "IAoSQ3JlYXRlVXNlclJlc3BvbnNlEgoKAmlkGAEgASgJMu4BCglNdWx0aXBs",
+            "YXkSPwoIR2V0VXNlcnMSFy5hbmhhcnUuR2V0VXNlcnNSZXF1ZXN0GhguYW5o",
+            "YXJ1LkdldFVzZXJzUmVzcG9uc2UwARJICgtTZXRQb3NpdGlvbhIaLmFuaGFy",
+            "dS5TZXRQb3NpdGlvblJlcXVlc3QaGy5hbmhhcnUuU2V0UG9zaXRpb25SZXNw",
+            "b25zZSgBElYKD0Nvbm5lY3RQb3NpdGlvbhIeLmFuaGFydS5Db25uZWN0UG9z",
+            "aXRpb25SZXF1ZXN0Gh8uYW5oYXJ1LkNvbm5lY3RQb3NpdGlvblJlc3BvbnNl",
+            "KAEwATJHCgRVc2VyEj8KBkNyZWF0ZRIZLmFuaGFydS5DcmVhdGVVc2VyUmVx",
+            "dWVzdBoaLmFuaGFydS5DcmVhdGVVc2VyUmVzcG9uc2ViBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -46,6 +50,8 @@ namespace Anharu {
             new pbr::GeneratedClrTypeInfo(typeof(global::Anharu.UserPosition), global::Anharu.UserPosition.Parser, new[]{ "Id", "X", "Y" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Anharu.SetPositionRequest), global::Anharu.SetPositionRequest.Parser, new[]{ "Id", "X", "Y" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Anharu.SetPositionResponse), global::Anharu.SetPositionResponse.Parser, new[]{ "Status", "Id", "Error" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Anharu.ConnectPositionRequest), global::Anharu.ConnectPositionRequest.Parser, new[]{ "Id", "X", "Y" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Anharu.ConnectPositionResponse), global::Anharu.ConnectPositionResponse.Parser, new[]{ "Users" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Anharu.CreateUserRequest), global::Anharu.CreateUserRequest.Parser, new[]{ "Name" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Anharu.CreateUserResponse), global::Anharu.CreateUserResponse.Parser, new[]{ "Id" }, null, null, null)
           }));
@@ -859,6 +865,312 @@ namespace Anharu {
 
   }
 
+  public sealed partial class ConnectPositionRequest : pb::IMessage<ConnectPositionRequest> {
+    private static readonly pb::MessageParser<ConnectPositionRequest> _parser = new pb::MessageParser<ConnectPositionRequest>(() => new ConnectPositionRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<ConnectPositionRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Anharu.MultiplayReflection.Descriptor.MessageTypes[5]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ConnectPositionRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ConnectPositionRequest(ConnectPositionRequest other) : this() {
+      id_ = other.id_;
+      x_ = other.x_;
+      y_ = other.y_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ConnectPositionRequest Clone() {
+      return new ConnectPositionRequest(this);
+    }
+
+    /// <summary>Field number for the "id" field.</summary>
+    public const int IdFieldNumber = 1;
+    private string id_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Id {
+      get { return id_; }
+      set {
+        id_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "x" field.</summary>
+    public const int XFieldNumber = 2;
+    private double x_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public double X {
+      get { return x_; }
+      set {
+        x_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "y" field.</summary>
+    public const int YFieldNumber = 3;
+    private double y_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public double Y {
+      get { return y_; }
+      set {
+        y_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as ConnectPositionRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(ConnectPositionRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Id != other.Id) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(X, other.X)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(Y, other.Y)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Id.Length != 0) hash ^= Id.GetHashCode();
+      if (X != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(X);
+      if (Y != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Y);
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Id.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Id);
+      }
+      if (X != 0D) {
+        output.WriteRawTag(17);
+        output.WriteDouble(X);
+      }
+      if (Y != 0D) {
+        output.WriteRawTag(25);
+        output.WriteDouble(Y);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Id.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Id);
+      }
+      if (X != 0D) {
+        size += 1 + 8;
+      }
+      if (Y != 0D) {
+        size += 1 + 8;
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(ConnectPositionRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Id.Length != 0) {
+        Id = other.Id;
+      }
+      if (other.X != 0D) {
+        X = other.X;
+      }
+      if (other.Y != 0D) {
+        Y = other.Y;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Id = input.ReadString();
+            break;
+          }
+          case 17: {
+            X = input.ReadDouble();
+            break;
+          }
+          case 25: {
+            Y = input.ReadDouble();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class ConnectPositionResponse : pb::IMessage<ConnectPositionResponse> {
+    private static readonly pb::MessageParser<ConnectPositionResponse> _parser = new pb::MessageParser<ConnectPositionResponse>(() => new ConnectPositionResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<ConnectPositionResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Anharu.MultiplayReflection.Descriptor.MessageTypes[6]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ConnectPositionResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ConnectPositionResponse(ConnectPositionResponse other) : this() {
+      users_ = other.users_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ConnectPositionResponse Clone() {
+      return new ConnectPositionResponse(this);
+    }
+
+    /// <summary>Field number for the "users" field.</summary>
+    public const int UsersFieldNumber = 1;
+    private static readonly pb::FieldCodec<global::Anharu.UserPosition> _repeated_users_codec
+        = pb::FieldCodec.ForMessage(10, global::Anharu.UserPosition.Parser);
+    private readonly pbc::RepeatedField<global::Anharu.UserPosition> users_ = new pbc::RepeatedField<global::Anharu.UserPosition>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::Anharu.UserPosition> Users {
+      get { return users_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as ConnectPositionResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(ConnectPositionResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if(!users_.Equals(other.users_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      hash ^= users_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      users_.WriteTo(output, _repeated_users_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      size += users_.CalculateSize(_repeated_users_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(ConnectPositionResponse other) {
+      if (other == null) {
+        return;
+      }
+      users_.Add(other.users_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            users_.AddEntriesFrom(input, _repeated_users_codec);
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
   public sealed partial class CreateUserRequest : pb::IMessage<CreateUserRequest> {
     private static readonly pb::MessageParser<CreateUserRequest> _parser = new pb::MessageParser<CreateUserRequest>(() => new CreateUserRequest());
     private pb::UnknownFieldSet _unknownFields;
@@ -867,7 +1179,7 @@ namespace Anharu {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Anharu.MultiplayReflection.Descriptor.MessageTypes[5]; }
+      get { return global::Anharu.MultiplayReflection.Descriptor.MessageTypes[7]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -996,7 +1308,7 @@ namespace Anharu {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Anharu.MultiplayReflection.Descriptor.MessageTypes[6]; }
+      get { return global::Anharu.MultiplayReflection.Descriptor.MessageTypes[8]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
