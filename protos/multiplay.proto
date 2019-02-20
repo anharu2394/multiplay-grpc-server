@@ -4,6 +4,7 @@ package anharu;
 service Multiplay {
   rpc GetUsers(GetUsersRequest) returns (stream GetUsersResponse);
   rpc SetPosition(stream SetPositionRequest) returns (SetPositionResponse);
+  rpc ConnectPosition(stream ConnectPositionRequest) returns (stream ConnectPositionResponse);
 }
 
 message GetUsersRequest {
@@ -30,6 +31,16 @@ message SetPositionResponse {
   string status = 1;
   string id = 2;
   string error = 3;
+}
+
+message ConnectPositionRequest {
+  string id = 1;
+  double x = 2;
+  double y = 3;
+}
+
+message ConnectPositionResponse {
+  repeated UserPosition users = 1; 
 }
 
 service User {
