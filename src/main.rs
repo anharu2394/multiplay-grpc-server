@@ -132,8 +132,8 @@ impl User for UserService {
         println!("{}", &user_name);
         let new_user = doc! {
             "name": user_name,
-            "x": 0,
-            "y": 0,
+            "x": 0.0,
+            "y": 0.0,
         };
         let result_bson = coll.insert_one(new_user.clone(), None)
             .expect("Failed to insert doc.").inserted_id.expect("Failed to get inserted id");
