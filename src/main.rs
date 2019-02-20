@@ -17,6 +17,7 @@ use std::sync::{Arc, Mutex};
 use std::{io, thread};
 use std::io::Read;
 
+use protobuf::RepeatedField;
 use grpcio::*;
 use protos::multiplay::*;
 use protos::multiplay_grpc::{Multiplay, User};
