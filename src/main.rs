@@ -129,35 +129,26 @@ impl Multiplay for MultiplayService {
                 let player = coll_result.expect("result is None");
                 println!("player : {}",player);
                 
-                let coll = self.client.db("multiplay-grpc").collection("users");
-                let users = iter::repeat(())
-                    .map(|()| {
-                        let mut reply = ConnectPositionResponse::new();
-                        let result_users = coll.find(None, None)
-                            .expect("Failed to get users");
-                        let mut users_vec = Vec::new();
-                        result_users
-                            .map(move |user| {
-                                let mut user_position = UserPosition::new();
-                                let doc = user.unwrap();
-                                user_position.set_id(doc.get_object_id("_id").unwrap().to_hex());
-                                user_position.set_x(doc.get_f64("x").unwrap());
-                                user_position.set_y(doc.get_f64("y").unwrap());
-                                user_position
-                            })
-                            .for_each(|user| {
-                                users_vec.push(user);
-                            });
-                        reply.set_users(RepeatedField::from_vec(users_vec));
-                        (reply, WriteFlags::default())
-                    });
-                stream::iter_ok::<_, Error>(users)
-            })
-            .flatten();
+                let result_users = coll.find(None, None)
+                    .expect("Failed to get users");
+                let users = result_users
+                    .map(move |user| {
+                        let mut user_position = UserPosition::new();
+                        let doc = user.unwrap();
+                        user_position.set_id(doc.get_object_id("_id").unwrap().to_hex());
+                        user_position.set_x(doc.get_f64("x").unwrap());
+                        user_position.set_y(doc.get_f64("y").unwrap());
+                        user_position
+                    })
+                    .collect();
+                let mut reply = ConnectPositionResponse::new();
+                reply.set_users(RepeatedField::from_vec(users));
+                (reply, WriteFlags::default())
+            });
             let f = resp
                 .send_all(to_send)
                 .map(|_| {})
-                .map_err(|e| println!("failed to route chat: {:?}", e));
+                .map_err(|e| println!("failed : {:?}", e));
             ctx.spawn(f)
     }
 }
