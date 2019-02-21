@@ -1,5 +1,0 @@
-CREATE TABLE members (
-  id SERIAL PRIMARY KEY,
-  user_id SERIAL REFERENCES USERS(id),
-  room_id SERIAL REFERENCES ROOMS(id)
-)
