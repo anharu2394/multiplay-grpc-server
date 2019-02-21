@@ -1,7 +1,3 @@
-extern crate futures;
-extern crate serde_derive;
-extern crate mongodb;
-
 mod protos;
 
 use futures::*;
