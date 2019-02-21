@@ -111,10 +111,11 @@ impl Multiplay for MultiplayService {
         req: RequestStream<ConnectPositionRequest>,
         resp: DuplexSink<ConnectPositionResponse>
         ) {
-        let coll = self.client.db("multiplay-grpc").collection("users");
+        let db = self.client.db("multiplay-grpc").clone();
         let to_send = req
             .map(move |position| {
                 println!("Receive: {:?}", position);
+                let coll = db.collection("users");
                 let id = position.get_id().to_string();
                 let filter = doc!{"_id": ObjectId::with_string(&id).unwrap()};
                 let new_position = doc!{
