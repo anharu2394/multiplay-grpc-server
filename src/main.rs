@@ -1,5 +1,4 @@
 extern crate futures;
-extern crate multiplay_grpc_server;
 extern crate serde_derive;
 extern crate mongodb;
 
