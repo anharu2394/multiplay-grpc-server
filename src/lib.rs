@@ -4,7 +4,6 @@ extern crate diesel;
 extern crate serde_derive;
 extern crate dotenv;
 
-pub mod models;
 pub mod schema;
 
 use diesel::prelude::*;
