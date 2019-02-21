@@ -10,8 +10,7 @@ use futures::Stream;
 use futures::sync::oneshot;
 use std::env;
 use std::iter;
-use std::sync::atomic::{AtomicBool, Ordering};
-use std::sync::{Arc, Mutex};
+use std::sync::{Arc};
 use std::{io, thread};
 use std::io::Read;
 
@@ -106,6 +105,51 @@ impl Multiplay for MultiplayService {
         })
         .map_err(|e| println!("failed to record route: {:?}", e));
         ctx.spawn(f)
+    }
+    fn connect_position(&mut self,
+        ctx: RpcContext,
+        req: RequestStream<ConnectPositionRequest>,
+        resp: DuplexSink<ConnectPositionResponse>
+        ) {
+        let db = self.client.db("multiplay-grpc").clone();
+        let to_send = req
+            .map(move |position| {
+                println!("Receive: {:?}", position);
+                let coll = db.collection("users");
+                let id = position.get_id().to_string();
+                let filter = doc!{"_id": ObjectId::with_string(&id).unwrap()};
+                let new_position = doc!{
+                    "$set": {
+                        "x": position.get_x(),
+                        "y": position.get_y(),
+                    },
+                };
+                let coll_result = coll.find_one_and_update(filter.clone(), new_position, None)
+                    .expect("Faild to get player");
+                let player = coll_result.expect("result is None");
+                println!("player : {}",player);
+                
+                let result_users = coll.find(None, None)
+                    .expect("Failed to get users");
+                let users = result_users
+                    .map(move |user| {
+                        let mut user_position = UserPosition::new();
+                        let doc = user.unwrap();
+                        user_position.set_id(doc.get_object_id("_id").unwrap().to_hex());
+                        user_position.set_x(doc.get_f64("x").unwrap());
+                        user_position.set_y(doc.get_f64("y").unwrap());
+                        user_position
+                    })
+                    .collect();
+                let mut reply = ConnectPositionResponse::new();
+                reply.set_users(RepeatedField::from_vec(users));
+                (reply, WriteFlags::default())
+            });
+            let f = resp
+                .send_all(to_send)
+                .map(|_| {})
+                .map_err(|e| println!("failed : {:?}", e));
+            ctx.spawn(f)
     }
 }
 
