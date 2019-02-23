@@ -19,12 +19,14 @@ message UserPosition {
   string id = 1;
   double x = 2;
   double y = 3;
+  double z = 4;
 }
 
 message SetPositionRequest {
   string id = 1;
   double x = 2;
   double y = 3;
+  double z = 4;
 }
 
 message SetPositionResponse {
@@ -37,6 +39,7 @@ message ConnectPositionRequest {
   string id = 1;
   double x = 2;
   double y = 3;
+  double z = 4;
 }
 
 message ConnectPositionResponse {
