@@ -12,6 +12,7 @@ db.user.collection =  {
   "name": "user name",
   "x": 0, # x-coordinate
   "y" 0, # y-coordinate
+  "z" 0, # z-coordinate
 }
 ```
 

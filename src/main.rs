@@ -50,6 +50,7 @@ impl Multiplay for MultiplayService {
                         user_position.set_id(doc.get_object_id("_id").unwrap().to_hex());
                         user_position.set_x(doc.get_f64("x").unwrap());
                         user_position.set_y(doc.get_f64("y").unwrap());
+                        user_position.set_y(doc.get_f64("z").unwrap());
                         user_position
                     })
                     .for_each(|user| {
@@ -79,6 +80,7 @@ impl Multiplay for MultiplayService {
                 "$set": {
                     "x": position.get_x(),
                     "y": position.get_y(),
+                    "z": position.get_z(),
                 },
             };
             let coll_result = coll.find_one_and_update(filter.clone(), new_position, None)
@@ -117,6 +119,7 @@ impl Multiplay for MultiplayService {
                     "$set": {
                         "x": position.get_x(),
                         "y": position.get_y(),
+                        "z": position.get_z(),
                     },
                 };
                 let coll_result = coll.find_one_and_update(filter.clone(), new_position, None)
@@ -133,6 +136,7 @@ impl Multiplay for MultiplayService {
                         user_position.set_id(doc.get_object_id("_id").unwrap().to_hex());
                         user_position.set_x(doc.get_f64("x").unwrap());
                         user_position.set_y(doc.get_f64("y").unwrap());
+                        user_position.set_z(doc.get_f64("z").unwrap());
                         user_position
                     })
                     .collect();
@@ -157,6 +161,7 @@ impl User for UserService {
             "name": user_name,
             "x": 0.0,
             "y": 0.0,
+            "z": 0.0,
         };
         let result_bson = coll.insert_one(new_user.clone(), None)
             .expect("Failed to insert doc.").inserted_id.expect("Failed to get inserted id");
