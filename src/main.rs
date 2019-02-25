@@ -42,8 +42,7 @@ impl Multiplay for MultiplayService {
                 let mut reply = GetUsersResponse::new();
                 let result_users = coll.find(None, None)
                     .expect("Failed to get users");
-                let mut users_vec = Vec::new();
-                result_users
+                let users_vec: Vec<UserPosition> = result_users
                     .map(|user| {
                         let mut user_position = UserPosition::new();
                         let doc = user.unwrap();
@@ -53,9 +52,7 @@ impl Multiplay for MultiplayService {
                         user_position.set_y(doc.get_f64("z").unwrap());
                         user_position
                     })
-                    .for_each(|user| {
-                        users_vec.push(user);
-                    });
+                    .collect();
                 reply.set_users(RepeatedField::from_vec(users_vec));
                 (reply, WriteFlags::default())
             });
