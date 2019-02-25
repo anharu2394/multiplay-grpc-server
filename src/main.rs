@@ -36,9 +36,10 @@ impl Multiplay for MultiplayService {
         resp: ServerStreamingSink<GetUsersResponse>
         ) {
         println!("{}",req.get_room_id());
-        let coll = self.client.db("multiplay-grpc").collection("users");
+        let db = self.client.db("multiplay-grpc").clone();
         let users = iter::repeat(())
             .map(move |()| {
+                let coll = db.collection("users");
                 let mut reply = GetUsersResponse::new();
                 let result_users = coll.find(None, None)
                     .expect("Failed to get users");
