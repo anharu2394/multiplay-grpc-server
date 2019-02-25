@@ -86,14 +86,9 @@ impl Multiplay for MultiplayService {
                 .expect("Faild to get player");
             let player = coll_result.expect("result is None");
             println!("player : {}",player);
-            id
+            Ok(id) as Result<String>
         })
-        .fold(String::new(),|init,id| {
-            println!("init :{}",init);
-            println!("id: {}",id);
-            Ok(format!("{}",id)) as Result<String>
-        })
-        .and_then(move |id| {
+        .and_then(|id| {
             let mut rep = SetPositionResponse::new();
             rep.set_id(id);
             rep.set_status("ok".to_string());
