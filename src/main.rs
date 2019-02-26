@@ -70,7 +70,7 @@ impl Multiplay for MultiplayService {
         ) {
         let db = self.client.db("multiplay-grpc").clone();
         println!("get!!request");
-        let f = req.fold(String::new(), move |_, position| {
+        let f = req.map(move |position| {
             let coll = db.collection("users");
             println!("Receive: {:?}", position);
             let id = position.get_id().to_string();
@@ -86,11 +86,13 @@ impl Multiplay for MultiplayService {
                 .expect("Faild to get player");
             let player = coll_result.expect("result is None");
             println!("player : {}",player);
-            Ok(id) as Result<String>
+            id
         })
-        .and_then(|id| {
+        .collect()
+        .and_then(|ids| {
+            let id = ids.first().unwrap();
             let mut rep = SetPositionResponse::new();
-            rep.set_id(id);
+            rep.set_id(id.clone());
             rep.set_status("ok".to_string());
             resp.success(rep)
         })
