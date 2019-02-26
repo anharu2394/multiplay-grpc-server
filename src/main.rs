@@ -36,9 +36,10 @@ impl Multiplay for MultiplayService {
         resp: ServerStreamingSink<GetUsersResponse>
         ) {
         println!("{}",req.get_room_id());
-        let coll = self.client.db("multiplay-grpc").collection("users");
+        let db = self.client.db("multiplay-grpc").clone();
         let users = iter::repeat(())
             .map(move |()| {
+                let coll = db.collection("users");
                 let mut reply = GetUsersResponse::new();
                 let result_users = coll.find(None, None)
                     .expect("Failed to get users");
@@ -67,9 +68,10 @@ impl Multiplay for MultiplayService {
         req: RequestStream<SetPositionRequest>,
         resp: ClientStreamingSink<SetPositionResponse>
         ) {
-        let coll = self.client.db("multiplay-grpc").collection("users");
+        let db = self.client.db("multiplay-grpc").clone();
         println!("get!!request");
         let f = req.map(move |position| {
+            let coll = db.collection("users");
             println!("Receive: {:?}", position);
             let id = position.get_id().to_string();
             let filter = doc!{"_id": ObjectId::with_string(&id).unwrap()};
@@ -86,14 +88,11 @@ impl Multiplay for MultiplayService {
             println!("player : {}",player);
             id
         })
-        .fold(String::new(),|init,id| {
-            println!("init :{}",init);
-            println!("id: {}",id);
-            Ok(format!("{}",id)) as Result<String>
-        })
-        .and_then(move |id| {
+        .collect()
+        .and_then(|ids| {
+            let id = ids.first().unwrap();
             let mut rep = SetPositionResponse::new();
-            rep.set_id(id);
+            rep.set_id(id.clone());
             rep.set_status("ok".to_string());
             resp.success(rep)
         })
